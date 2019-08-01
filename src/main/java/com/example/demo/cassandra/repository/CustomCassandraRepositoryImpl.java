@@ -1,5 +1,6 @@
 package com.example.demo.cassandra.repository;
 
+import com.example.demo.cassandra.model.Book;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.core.InsertOptions;
 import org.springframework.data.cassandra.core.mapping.BasicCassandraPersistentEntity;
@@ -12,7 +13,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomCassandraRepositoryImpl<T, ID> extends SimpleCassandraRepository<T, ID> implements CustomCassandraRepository<T, ID> {
+public class CustomCassandraRepositoryImpl<T, ID> extends SimpleCassandraRepository<T, ID> implements CustomCassandraRepository<T,ID> {
 
     private final InsertOptions INSERT_NULLS = InsertOptions.builder().withInsertNulls().build();
 
@@ -72,6 +73,11 @@ public class CustomCassandraRepositoryImpl<T, ID> extends SimpleCassandraReposit
             }
             return result;
         }
+    }
+
+    @Override
+    public List<String> findDistinctCategory() {
+        return operations.select("SELECT DISTINCT category FROM book", String.class);
     }
 
 }
